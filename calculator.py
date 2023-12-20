@@ -3,14 +3,19 @@ from tkinter import Tk, Entry, Button, StringVar
 class Calculator:
   def __init__(self,master):
     master.title("Calculator")
-    # geometry('width x height')
-    master.geometry("357x420+0+0")
+    # geometry('width x height + pos X screen + pos Y screen')
+    master.geometry("300x400+810+340")
     master.config(bg='#221133')
+    # minsize(width, height)
+    master.minsize(300,400)
     # resizable(x=,y=)
     master.resizable(True,True)
 
     self.equation= StringVar()
     self.entry_value=''
+
+    # Configura la función de retorno de llamada para rastrear cambios en la entrada
+    self.equation.trace_add("write", self.update_entry_value)
 
     num_columns = 4
     num_rows = 6
@@ -62,6 +67,10 @@ class Calculator:
       expression = self.entry_value.replace('%','/100*')
       result=eval(expression)
       self.equation.set(result)
+  
+  def update_entry_value(self, *args):
+    # Actualiza la variable entry_value cuando la variable de cadena (StringVar) cambia
+    self.entry_value = self.equation.get()
 
 
 root = Tk()
