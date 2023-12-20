@@ -10,6 +10,8 @@ class Calculator:
     master.minsize(300,400)
     # resizable(x=,y=)
     master.resizable(True,True)
+    master['padx'] = 1
+    master['pady'] = 1
 
     self.equation= StringVar()
     self.entry_value=''
@@ -17,40 +19,72 @@ class Calculator:
     # Configura la función de retorno de llamada para rastrear cambios en la entrada
     self.equation.trace_add("write", self.update_entry_value)
 
+
+    # Configura el peso de las filas y columnas
+
     num_columns = 4
-    num_rows = 6
+    num_rows = 7
 
-    cell_width = (1 / num_columns) - 0.01
-    cell_height = (1 / num_rows) - 0.01
+    for i in range(num_rows): # Sets weight to all the rows
+      master.grid_rowconfigure(i, weight=1)
+    for i in range(num_columns): # Sets weight to all the columns
+      master.grid_columnconfigure(i, weight=1)
 
 
-    Entry(width=17,bg='#221133',fg='#ffffff',font=('Arial Bold',28),textvariable=self.equation).place(x=0,y=0, relheight= cell_height , relwidth=1)
+    # creates and inserts the Entry at the first row and column, with 4 columns width and with sticky on North, South, East and West
+    Entry(bg='#221133', justify="right", fg='#ffffff', font=('Arial Bold', 28), textvariable=self.equation).grid(row=0, column=0,rowspan=1, columnspan=4, pady=(0, 1), sticky='nsew')
 
-    Button(text='(',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('(')).place(relx=0/num_columns, rely=1/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text=')',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(')')).place(relx=1/num_columns, rely=1/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='%',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('%')).place(relx=2/num_columns, rely=1/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='1',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(1)).place(relx=0/num_columns, rely=2/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='2',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(2)).place(relx=1/num_columns, rely=2/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='3',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(3)).place(relx=2/num_columns, rely=2/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='4',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(4)).place(relx=0/num_columns, rely=3/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='5',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(5)).place(relx=1/num_columns, rely=3/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='6',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(6)).place(relx=2/num_columns, rely=3/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='7',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(7)).place(relx=0/num_columns, rely=4/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='8',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(8)).place(relx=1/num_columns, rely=4/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='9',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(9)).place(relx=2/num_columns, rely=4/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='0',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show(0)).place(relx=1/num_columns, rely=5/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='.',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('.')).place(relx=2/num_columns, rely=5/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='+',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('+')).place(relx=3/num_columns, rely=4/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='-',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('-')).place(relx=3/num_columns, rely=3/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='/',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('/')).place(relx=3/num_columns, rely=1/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='*',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=lambda:self.show('*')).place(relx=3/num_columns, rely=2/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='=',font=('Arial Bold',16),relief='flat',activebackground='#441155',activeforeground='#ffffff',bg='#552266',fg='#ffffff',command=self.solve).place(relx=3/num_columns, rely=5/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='C',font=('Arial Bold',16),relief='flat',activebackground='#221133',activeforeground='#ffffff',bg='#332244',fg='#ffffff',command=self.clear).place(relx=0/num_columns, rely=5/num_rows, relheight=cell_height,relwidth=cell_width)
-    Button(text='←',font=('Arial Bold',16),relief='flat',activebackground='#441155',activeforeground='#ffffff',bg='#552266',fg='#ffffff',command=self.delete_one).place(relx= (3.5/num_columns)-0.01, rely=(0/num_rows)+0.01, relheight= cell_height-0.02 , relwidth=cell_width/2)
+    self.create_buttons(master)
+
+  
+  def create_buttons(self, master):
+          num_columns = 4
+
+          operators = ['ⁿ','','','←','(', ')', '%', '/', '1', '2', '3', '*', '4', '5', '6', '-', '7', '8', '9', '+', 'C', '0', '.', '=']
+          row = 1
+          col = 0
+
+          for operator in operators:
+              Button(
+                  text=operator,
+                  font=('Arial Bold', 16),
+                  relief='flat',
+                  activebackground='#221133',
+                  activeforeground='#ffffff',
+                  bg='#332244',
+                  fg='#ffffff',
+                  command=lambda o=operator: self.show(o) if (o not in ['=', 'C', '←', 'ⁿ']) else self.solve() if (o == '=') else self.delete_one() if (o == '←') else self.handle_pow() if (o == 'ⁿ') else self.clear()
+              ).grid(row=row, column=col, sticky='nsew', padx=2, pady=2)
+              col += 1
+              if col == num_columns:
+                  col = 0
+                  row += 1
+
 
   def show(self,value):
-    self.entry_value+=str(value)
+    length = len(self.equation.get())
+    last_digit = self.equation.get()[length-1:length]
+    
+    # if the value is '*', '/', '%' or '.'
+    if value in ['*', '/', '%', '.', '²']:
+      # if the length of the variable is lower or equal to 1
+      if (length < 1):
+        # avoid non '+' or '-' operators at the start of the variable
+        return
+    
+    # if the last digit is an operator
+    if last_digit in ['+', '-', '*', '/', '%', '.']:
+      if value in ['*', '/', '%', '.','+', '-']:
+        # avoid multiple operators
+        self.entry_value = self.entry_value[:length-1]
+
+
+    if self.equation.get() == '0': # '0' at the start fix
+      self.entry_value=str(value)
+    else:
+      self.entry_value+=str(value)
     self.equation.set(self.entry_value)
+
 
   def delete_one(self):
     value = self.entry_value
