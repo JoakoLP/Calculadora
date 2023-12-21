@@ -65,6 +65,11 @@ class Calculator:
           fg='#ffffff',
           command=lambda o=operator: self.show(o) if (o not in ['=', 'C', '←', 'ⁿ']) else self.solve() if (o == '=') else self.delete_one() if (o == '←') else self.handle_pow() if (o == 'ⁿ') else self.clear()
       )
+
+      # Add 'hover' events
+      button.bind("<Enter>", lambda event, button=button: self.on_hover_enter(button))
+      button.bind("<Leave>", lambda event, button=button: self.on_hover_leave(button))
+
       button.grid(row=row, column=col, sticky='nsew', padx=2, pady=2)
       col += 1
       if col == num_columns:
@@ -72,6 +77,8 @@ class Calculator:
           row += 1
       # Adding the button to the list
       self.buttons.append(button)
+
+
 
   def show(self,value):
     length = len(self.equation.get())
@@ -126,19 +133,19 @@ class Calculator:
 
     
   def solve(self):
-        print(self.entry_value)
+        print(f'Expression: {self.entry_value}')
         if len(self.entry_value) > 0:
             expression = self.entry_value
             # Find superscripts and convert them to powers
             match = re.findall(r'[⁰¹²³⁴⁵⁶⁷⁸⁹]+',expression)
-            print(match)
-            # while match:
-            for pow in match:
-              print(pow)
-              this_pow = f'**{pow.replace('¹','1').replace('²','2').replace('³','3').replace('⁴','4').replace('⁵','5').replace('⁶','6').replace('⁷','7').replace('⁸','8').replace('⁹','9').replace('⁰','0')}'
-              print(this_pow)
-              expression = expression.replace(pow,this_pow)
-            print(expression)
+            if match:
+              print(f'Pow list: {match}')
+              for i,pow in enumerate(match):
+                print(f'Pow number {i+1}: {pow}')
+                this_pow = f'**{pow.replace('¹','1').replace('²','2').replace('³','3').replace('⁴','4').replace('⁵','5').replace('⁶','6').replace('⁷','7').replace('⁸','8').replace('⁹','9').replace('⁰','0')}'
+                print(f'Converted pow: {this_pow}')
+                expression = expression.replace(pow,this_pow)
+              print(f'Converted expression: {expression}')
             result = eval(expression)
             self.equation.set(result)
 
@@ -172,6 +179,14 @@ class Calculator:
           return '#119999' if self.pow else '#553355'
       else:
           return '#332244'
+
+  def on_hover_enter(self, button):
+    button.configure(background='#330033')
+
+  def on_hover_leave(self, button):
+    operator = button['text']
+    button.configure(background=self.calculate_button_color(operator))
+
 
 root = Tk()
 calculator = Calculator(root)
