@@ -78,7 +78,7 @@ class Calculator:
     last_digit = self.equation.get()[length-1:length]
     
     # if the value is '*', '/', '%' or '.'
-    if value in ['*', '/', '%', '.']:
+    if value in ['*', '/', '%', '.', ')'] or (self.pow == True and value.isdigit()):
       # if the length of the variable is lower or equal to 1
       if (length < 1):
         # avoid non '+' or '-' operators at the start of the variable
@@ -87,6 +87,11 @@ class Calculator:
     # if the last digit is an operator
     if last_digit in ['+', '-', '*', '/', '%', '.']:
       if value in ['*', '/', '%', '.','+', '-']:
+        if (len(value) <= 1):
+          if value in ['*', '/', '%', '.']:
+            # Avoid inserting '*', '/', '%' or '.' at start by replacing
+            return
+
         # avoid multiple operators
         self.entry_value = self.entry_value[:length-1]
 
